@@ -11,7 +11,6 @@ const avisoResgate = document.getElementById('avisoResgate');
 
 let creditos = 100;
 let chanceVitoria = parseInt(chanceVitoriaInput.value);
-let pontos = 0;
 
 const simbolos = ['simbolo1', 'simbolo2', 'simbolo3', 'simbolo4', 'simbolo5'];
 const combinacoesVencedoras = [
@@ -73,7 +72,10 @@ botaoGirar.addEventListener('click', () => {
     creditosElement.textContent = creditos;
 
     const simbolosRodados = girarRolos();
-    const ganhou = Math.random() * 100 <= chanceVitoria;
+
+    // Verificação da vitória baseada na chance de vitória
+    const chanceAleatoria = Math.random() * 100;  // Gera um número aleatório entre 0 e 100
+    const ganhou = chanceAleatoria <= chanceVitoria;  // Compara com a chance de vitória
 
     setTimeout(() => {
         if (ganhou && verificarResultado(simbolosRodados)) {
