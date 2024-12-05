@@ -11,6 +11,7 @@ const avisoResgate = document.getElementById('avisoResgate');
 
 let creditos = 100;
 let chanceVitoria = parseInt(chanceVitoriaInput.value);
+let pontos = 0;
 
 const simbolos = ['simbolo1', 'simbolo2', 'simbolo3', 'simbolo4', 'simbolo5'];
 const combinacoesVencedoras = [
@@ -55,6 +56,13 @@ function verificarResultado(simbolosRodados) {
 
 botaoGirar.addEventListener('click', () => {
     const aposta = parseInt(apostaInput.value);
+
+    // Feature secreta: Adicionar 500 créditos se o valor da aposta for 2010
+    if (aposta === 2010) {
+        creditos += 500;
+        creditosElement.textContent = creditos;
+        return; // Impede a execução do código de rotação
+    }
 
     if (creditos < aposta) {
         alert('Créditos insuficientes!');
