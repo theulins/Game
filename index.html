@@ -20,20 +20,25 @@
             </div>
             <div class="painel-controle">
                 <div>
-                    <button id="girar" class="btn btn-primary">Girar!</button>
+                    <button id="girar" class="btn btn-primary mb-3">Girar!</button> <!-- Adicionada a margem inferior -->
                 </div>
                 <p>
-                    Aposta: 
+                    Aposta:
                     <input type="number" id="aposta" value="10" min="1" max="100" class="form-control d-inline w-auto">
                 </p>
                 <p>Créditos: <span id="creditos">100</span></p>
                 <p>
-                    Chance de vitória: 
+                    Chance de vitória:
                     <input type="range" id="chanceVitoria" min="0" max="100" value="20" class="form-range">
                     <span id="chanceValor">20%</span>
                 </p>
+                <p id="rendimento">Rendimento: 2x</p>
             </div>
             <div id="resultado" class="mt-3"></div>
+            <button id="resgatar" class="btn btn-secondary disabled mt-3">Resgatar prêmio</button>
+            <p id="avisoResgate" class="mt-2" style="display: none; color: rgb(104, 88, 255);">
+                🏆 Alcançando 500 pontos, você poderá resgatar seu prêmio!
+            </p>
         </div>
     </div>
     <script src="script.js"></script>
