@@ -1,6 +1,6 @@
-/* Fundo bonito para a página */
+/* Corpo */
 body {
-    background: linear-gradient(to bottom, #6a11cb, #2575fc);
+    background: linear-gradient(to bottom, #1d2671, #c33764);
     color: white;
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -8,10 +8,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Altura mínima da tela */
+    min-height: 100vh;
 }
 
-/* Centralização do jogo */
 .container {
     display: flex;
     align-items: center;
@@ -19,15 +18,16 @@ body {
     height: 100%;
 }
 
+/* Estrutura do Jogo */
 .game {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 
-/* Rolo dos símbolos */
+/* Rolos */
 .rolos {
     display: flex;
     justify-content: center;
@@ -37,51 +37,46 @@ body {
 .rolo {
     width: 100px;
     height: 100px;
-    background-color: #eee;
+    background-color: #333;
     margin: 10px;
-    border: 2px solid #333;
-    border-radius: 10px;
+    border-radius: 15px;
     overflow: hidden;
     position: relative;
-    perspective: 1000px; /* Permite a rotação 3D */
 }
 
 .rolo img {
     width: 100%;
     height: 100%;
-    position: absolute;
-    transform: rotateY(0deg);
-    backface-visibility: hidden; /* Oculta o verso da imagem */
-    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* Animação suavizada */
+    object-fit: cover;
+    animation: girar 1.2s ease-in-out infinite;
 }
 
-.rolo img.girando {
-    transform: rotateY(720deg); /* Gira 2 vezes para efeito de movimento */
+.rolo img.parado {
+    animation: none;
 }
 
-/* Painel de controle */
+/* Painel de Controle */
 .painel-controle {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px; /* Espaçamento entre os elementos */
+    gap: 10px;
     margin-top: 10px;
 }
 
 button {
     padding: 10px 20px;
     font-size: 18px;
-    font-weight: bold;
     border: none;
     border-radius: 5px;
-    background: linear-gradient(to bottom, #4caf50, #388e3c); /* Botão verde */
+    background: linear-gradient(to right, #6a11cb, #2575fc);
     color: white;
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
+    transition: transform 0.2s;
 }
 
 button:hover {
-    background: linear-gradient(to bottom, #45a049, #2e7d32);
+    transform: scale(1.05);
 }
 
 /* Resultado */
@@ -89,40 +84,14 @@ button:hover {
     text-align: center;
     margin-top: 10px;
     font-weight: bold;
-    color: #fff;
-}
-
-#resultado.ganhou {
-    color: lightgreen;
-    animation: pulse 1s infinite;
-}
-
-#resultado.perdeu {
-    color: red;
-    animation: shake 0.5s infinite;
 }
 
 /* Animações */
-@keyframes pulse {
+@keyframes girar {
     0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
+        transform: translateY(0%);
     }
     100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes shake {
-    0%, 50% {
-        transform: translateX(0);
-    }
-    10%, 30% {
-        transform: translateX(-10px);
-    }
-    20%, 40% {
-        transform: translateX(10px);
+        transform: translateY(-200%);
     }
 }
