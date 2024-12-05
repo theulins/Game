@@ -1,97 +1,104 @@
-/* Corpo */
-body {
-    background: linear-gradient(to bottom, #1d2671, #c33764);
-    color: white;
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+const rolos = document.querySelectorAll('.rolo');
+const botaoGirar = document.getElementById('girar');
+const apostaInput = document.getElementById('aposta');
+const creditosElement = document.getElementById('creditos');
+const resultadoElement = document.getElementById('resultado');
+const chanceVitoriaInput = document.getElementById('chanceVitoria');
+const chanceValor = document.getElementById('chanceValor');
+const rendimentoElement = document.getElementById('rendimento');
+const botaoResgatar = document.getElementById('resgatar');
+const avisoResgate = document.getElementById('avisoResgate');
+
+let creditos = 100;
+let chanceVitoria = parseInt(chanceVitoriaInput.value);
+
+const simbolos = ['simbolo1', 'simbolo2', 'simbolo3', 'simbolo4', 'simbolo5'];
+const combinacoesVencedoras = [
+    ['simbolo1', 'simbolo1', 'simbolo1'],
+    ['simbolo2', 'simbolo2', 'simbolo2'],
+    ['simbolo3', 'simbolo3', 'simbolo3']
+];
+
+function atualizarRendimento() {
+    const multiplicador = (100 / chanceVitoria).toFixed(1);
+    rendimentoElement.textContent = `Rendimento: ${multiplicador}x`;
 }
 
-.container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+chanceVitoriaInput.addEventListener('input', () => {
+    chanceVitoria = parseInt(chanceVitoriaInput.value);
+    chanceValor.textContent = `${chanceVitoria}%`;
+    atualizarRendimento();
+});
+
+function girarRolos() {
+    const simbolosRodados = [];
+
+    rolos.forEach(rolo => {
+        const img = rolo.querySelector('img');
+        const randomIndex = Math.floor(Math.random() * simbolos.length);
+        const simbolo = simbolos[randomIndex];
+        img.src = `simbolos/${simbolo}.png`;
+        simbolosRodados.push(simbolo);
+    });
+
+    return simbolosRodados;
 }
 
-/* Estrutura do Jogo */
-.game {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    text-align: center;
-}
-
-/* Rolos */
-.rolos {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.rolo {
-    width: 100px;
-    height: 100px;
-    background-color: #333;
-    margin: 10px;
-    border-radius: 15px;
-    overflow: hidden;
-    position: relative;
-}
-
-.rolo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: girar 1.2s ease-in-out infinite;
-}
-
-.rolo img.parado {
-    animation: none;
-}
-
-/* Painel de Controle */
-.painel-controle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    background: linear-gradient(to right, #6a11cb, #2575fc);
-    color: white;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-button:hover {
-    transform: scale(1.05);
-}
-
-/* Resultado */
-#resultado {
-    text-align: center;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-/* Animações */
-@keyframes girar {
-    0% {
-        transform: translateY(0%);
+function verificarResultado(simbolosRodados) {
+    for (const combinacao of combinacoesVencedoras) {
+        if (JSON.stringify(combinacao) === JSON.stringify(simbolosRodados)) {
+            return true;
+        }
     }
-    100% {
-        transform: translateY(-200%);
-    }
+    return false;
 }
+
+botaoGirar.addEventListener('click', () => {
+    const aposta = parseInt(apostaInput.value);
+
+    if (creditos < aposta) {
+        alert('Créditos insuficientes!');
+        return;
+    }
+
+    creditos -= aposta;
+    creditosElement.textContent = creditos;
+
+    const simbolosRodados = girarRolos();
+    const ganhou = Math.random() * 100 <= chanceVitoria;
+
+    setTimeout(() => {
+        if (ganhou && verificarResultado(simbolosRodados)) {
+            const premio = aposta * (100 / chanceVitoria).toFixed(1);
+            creditos += premio;
+            creditosElement.textContent = creditos;
+            resultadoElement.textContent = `🎉 Você ganhou ${premio.toFixed(0)} créditos!`;
+            resultadoElement.style.color = 'lightgreen';
+        } else {
+            resultadoElement.textContent = 'Você perdeu. Tente novamente!';
+            resultadoElement.style.color = 'red';
+        }
+
+        if (creditos >= 500) {
+            botaoResgatar.classList.remove('disabled');
+            avisoResgate.style.display = 'none';
+        } else {
+            avisoResgate.style.display = 'block';
+        }
+    }, 1000);
+});
+
+botaoResgatar.addEventListener('click', () => {
+    if (!botaoResgatar.classList.contains('disabled')) {
+        const numeroWhatsApp = '5544999703269';
+        const mensagem = encodeURIComponent(
+            '🎉 Olá! Atingi 500 pontos no jogo Fortune Bab\'s 🐾 e quero resgatar meu prêmio 🏆! ' +
+            '🎰 Foi incrível jogar e conquistar essa vitória. Vamos liberar minha recompensa? 😃✨'
+        );
+        const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
+        alert('Você será redirecionado para o WhatsApp para enviar a mensagem de resgate.');
+        window.open(linkWhatsApp, '_blank');
+    }
+});
+
+atualizarRendimento();
